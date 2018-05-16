@@ -1,6 +1,6 @@
 #!/bin/ptyhon
 
-from SecurityHeadersConsoleV3 import SecurityHeaderVerifier
+from SecurityHeadersConsole import SecurityHeaderVerifier
 import sys
 
 secure = SecurityHeaderVerifier()

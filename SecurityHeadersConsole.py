@@ -27,25 +27,27 @@ class SecurityHeaderVerifier(object):
 			header = {"User-Agent":"Mozilla/5.0"}
 			req = urllib2.Request(url, headers=header)
 			content = urllib2.urlopen(req, timeout = 2)
-			print "URL: %s" %content.geturl()
-			print "IP: %s\n\nSECURITY HEADERS" % socket.gethostbyname(urlparse(content.geturl()).hostname)
-			self.check_headers(content.info())
+			ip = socket.gethostbyname(urlparse(content.geturl()).hostname)
+			info = content.info()
+			request_url = content.geturl()
+
+			print "URL: %s" % request_url
+			print "IP: %s\n\nSECURITY HEADERS" % ip
+			self.check_headers(info)
 			self.show_verified_headers()
-			print "\nRAW HEADERS\n%s" % content.info()
+			print "\nRAW HEADERS\n%s" % info
 			return True
+
 		except (urllib2.URLError, ValueError):
 			return False
 
 	def do_search(self, string):
 		protocol = [" ", "https://", "http://"]
+
 		for index in range(len(protocol)):
 			if self.verify_url("%s%s" % (protocol[index], string)):
 				break
 			elif index == 2:
 				print "Page Not Found."
 
-#recibir url
-#si https:// esta en el url entonces abrir el url
-#si no, si http:// esta en el url entonces abrir el url
-#else: abrir el url con https
-# si no abre con https intentar con http
+
