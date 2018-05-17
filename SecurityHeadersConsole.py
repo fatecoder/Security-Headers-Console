@@ -6,10 +6,14 @@ from urlparse import urlparse
 class SecurityHeaderVerifier(object):
 	__security_headers = { "content-security-policy":   ["Not Found", ["default-src", "script-src", "connect-src", "img-src", "style-src"], 5, "Not Secure", "content-security-policy: default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self';"],
 						   "x-xss-protection":          ["Not Found", ["1", "mode", "block"], 3, "Not Secure", "x-ss-protection: 1; mode=block"],
-						   "strict-transport-security": ["Not Found", ["max-age", "includeSubDomains"], 2, "Not Secure", "strict-transport-security: max-age=YOUR MAX AGE; includeSubDomains"],
+						   "strict-transport-security": ["Not Found", ["max-age", "includeSubDomains"], 2, "Not Secure", "strict-transport-security: max-age=YOUR_MAX_AGE; includeSubDomains"],
 						   "x-frame-options":           ["Not Found", ["DENY"], 1, "Not Secure", "x-frame-options: DENY"],
 						   "public-keys-pins":          ["Not Found", ["pin-sha256","max-age", "includeSubDomains", "report-uri"], 5, "Not Secure", "Public-Key-Pins: pin-sha256=PRIMARY_KEY; pin-sha256=BACKUP_KEY; max-age=PIN_CACHE_EXPIRE_TIME; includeSubdomains; report-uri=YOUR_SITE_TO_REPORT"],
 						   "x-content-type-options":    ["Not Found", ["nosniff"], 1, "Not Secure", "x-content-type-options: nosniff"] }
+
+	def get_max_age(self, string):
+		string = string[string.index("max-age="): len(string)]
+		return int(string[string.index("=")+1: string.index(";") ])
 
 	def check_headers(self, info):
 		for key in info:
